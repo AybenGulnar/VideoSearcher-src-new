@@ -241,8 +241,8 @@ python3 plot_results.py \
 
 ## Deployment Summary
 
-[DEPLOYMENT-SUMMARY.md](DEPLOYMENT-SUMMARY.md) contains a detailed, step-by-step walkthrough of the entire deployment process — including infrastructure setup, Docker image builds, Lambda configuration, Step Functions orchestration, load testing, and cost/performance observations.
----
+**[DEPLOYMENT-SUMMARY.md](DEPLOYMENT-SUMMARY.md) contains a detailed, step-by-step walkthrough of the entire deployment process — including infrastructure setup, Docker image builds, Lambda configuration, Step Functions orchestration, load testing, and cost/performance observations.
+**---
 
 ## Presentation
 
