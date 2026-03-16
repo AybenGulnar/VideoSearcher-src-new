@@ -1,0 +1,19 @@
+coloredlogs==15.0.1
+flatbuffers==23.1.4
+humanfriendly==10.0
+mpmath==1.2.1
+onnx==1.13.0
+onnxruntime==1.13.1
+opencv-python-headless==4.5.5.64
+packaging==23.0
+protobuf==3.20.3
+scipy==1.10.0
+sympy==1.11.1
+typing_extensions==4.4.0
+numpy==1.26.4
+pyyaml
+networkx
+pandas
+
+# For S3 operations in Lambda
+boto3==1.26.137

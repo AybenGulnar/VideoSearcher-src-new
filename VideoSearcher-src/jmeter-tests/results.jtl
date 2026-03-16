@@ -1,0 +1,28 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1773608240774,333,Set Phase Delays,200,OK,setUp - Compute Phase Delays 1-1,text,true,,0,0,1,1,null,0,0,0
+1773608244387,1564,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-1,text,true,,692,265,3,3,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,1558,0,464
+1773608251958,519,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-3,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,519,0,236
+1773608259360,461,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-5,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,461,0,206
+1773608260523,361,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-2,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,361,0,192
+1773608269223,390,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-4,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,390,0,177
+1773608274519,142,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-2,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,142,0,0
+1773608277415,203,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-1,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,203,0,0
+1773608280828,164,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-4,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,164,0,0
+1773608283039,193,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-2,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,192,0,0
+1773608285650,131,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-5,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,130,0,0
+1773608290229,140,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-1,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,140,0,0
+1773608295102,166,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-2,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,166,0,0
+1773608297697,167,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-4,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,167,0,0
+1773608299030,205,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-4,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,204,0,0
+1773608299558,295,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-1,text,true,,692,265,5,5,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,295,0,0
+1773608304531,150,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-2,text,true,,692,265,5,9,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,150,0,0
+1773608311568,323,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-5,text,true,,692,265,5,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,322,0,0
+1773608314276,308,POST /process,200,OK,Phase 2 - 10 users (load increase) 2-9,text,true,,692,265,10,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,308,0,157
+1773608315579,172,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-2,text,true,,692,265,5,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,171,0,0
+1773608315657,368,POST /process,200,OK,Phase 2 - 10 users (load increase) 2-8,text,true,,692,265,10,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,368,0,218
+1773608316141,339,POST /process,200,OK,Phase 2 - 10 users (load increase) 2-6,text,true,,692,265,10,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,339,0,211
+1773608316820,138,POST /process,200,OK,Phase 2 - 10 users (load increase) 2-6,text,true,,692,265,10,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,138,0,0
+1773608316965,287,POST /process,200,OK,Phase 2 - 10 users (load increase) 2-4,text,true,,692,265,10,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,287,0,159
+1773608317363,305,POST /process,200,OK,Phase 2 - 10 users (load increase) 2-1,text,true,,692,265,10,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,305,0,163
+1773608318427,165,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-5,text,true,,692,265,5,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,165,0,0
+1773608318725,359,POST /process,200,OK,Phase 1 - 5 users (ramp-up) 1-3,text,true,,692,265,5,15,https://arm24n4i15.execute-api.eu-west-1.amazonaws.com/prod/process?video=video_cut.mp4,359,0,191

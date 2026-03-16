@@ -1,0 +1,232 @@
+{
+  "Comment": "VideoSearcher 7-stage video processing pipeline",
+  "StartAt": "Stage1-AudioExtraction",
+  "States": {
+    "Stage1-AudioExtraction": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "videosearcher-ffmpeg-0-new",
+        "Payload": {
+          "input_bucket.$": "$.input_bucket",
+          "input_key.$": "$.input_key",
+          "output_bucket.$": "$.temp_bucket",
+          "output_key.$": "States.Format('{}/stage1/output.tar.gz', $.execution_id)"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.AWSLambdaException",
+            "Lambda.TooManyRequestsException",
+            "Lambda.ServiceException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 30,
+          "MaxAttempts": 15,
+          "BackoffRate": 1
+        }
+      ],
+      "ResultPath": "$.stage1_result",
+      "Next": "Stage2-SilenceDetection"
+    },
+    "Stage2-SilenceDetection": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "videosearcher-librosa-new",
+        "Payload": {
+          "input_bucket.$": "$.temp_bucket",
+          "input_key.$": "States.Format('{}/stage1/output.tar.gz', $.execution_id)",
+          "output_bucket.$": "$.temp_bucket",
+          "output_key.$": "States.Format('{}/stage2/output.tar.gz', $.execution_id)"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.AWSLambdaException",
+            "Lambda.TooManyRequestsException",
+            "Lambda.ServiceException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 30,
+          "MaxAttempts": 15,
+          "BackoffRate": 1
+        }
+      ],
+      "ResultPath": "$.stage2_result",
+      "Next": "Stage3-VideoSegmentation"
+    },
+    "Stage3-VideoSegmentation": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "videosearcher-ffmpeg-1-new",
+        "Payload": {
+          "input_bucket.$": "$.temp_bucket",
+          "input_key.$": "States.Format('{}/stage2/output.tar.gz', $.execution_id)",
+          "output_bucket.$": "$.temp_bucket",
+          "output_prefix.$": "States.Format('{}/stage3/clips', $.execution_id)"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.AWSLambdaException",
+            "Lambda.TooManyRequestsException",
+            "Lambda.ServiceException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 30,
+          "MaxAttempts": 15,
+          "BackoffRate": 1
+        }
+      ],
+      "ResultPath": "$.stage3_result",
+      "ResultSelector": {
+        "clips.$": "$.Payload.clips",
+        "clip_count.$": "$.Payload.clip_count"
+      },
+      "Next": "ProcessClipsInParallel"
+    },
+    "ProcessClipsInParallel": {
+      "Type": "Map",
+      "ItemsPath": "$.stage3_result.clips",
+      "MaxConcurrency": 2,
+      "Parameters": {
+        "clip.$": "$$.Map.Item.Value",
+        "temp_bucket.$": "$.temp_bucket",
+        "output_bucket.$": "$.output_bucket",
+        "execution_id.$": "$.execution_id"
+      },
+      "Iterator": {
+        "StartAt": "Stage4-Compression",
+        "States": {
+          "Stage4-Compression": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "FunctionName": "videosearcher-ffmpeg-2-new",
+              "Payload": {
+                "input_bucket.$": "$.clip.temp_bucket",
+                "input_key.$": "$.clip.clip_key",
+                "output_bucket.$": "$.temp_bucket",
+                "output_key.$": "States.Format('{}/stage4/clip_{}.tar.gz', $.execution_id, $.clip.clip_index)"
+              }
+            },
+            "Retry": [
+              {
+                "ErrorEquals": [
+                  "Lambda.AWSLambdaException",
+                  "Lambda.SdkClientException",
+                  "Lambda.TooManyRequestsException",
+                  "Lambda.ServiceException"
+                ],
+                "IntervalSeconds": 30,
+                "MaxAttempts": 15,
+                "BackoffRate": 1
+              }
+            ],
+            "ResultPath": "$.stage4_result",
+            "Next": "Stage5-Transcription"
+          },
+          "Stage5-Transcription": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "FunctionName": "videosearcher-deepspeech-new",
+              "Payload": {
+                "input_bucket.$": "$.temp_bucket",
+                "input_key.$": "States.Format('{}/stage4/clip_{}.tar.gz', $.execution_id, $.clip.clip_index)",
+                "output_bucket.$": "$.temp_bucket",
+                "output_key.$": "States.Format('{}/stage5/clip_{}.tar.gz', $.execution_id, $.clip.clip_index)"
+              }
+            },
+            "Retry": [
+              {
+                "ErrorEquals": [
+                  "Lambda.AWSLambdaException",
+                  "Lambda.SdkClientException",
+                  "Lambda.TooManyRequestsException",
+                  "Lambda.ServiceException"
+                ],
+                "IntervalSeconds": 30,
+                "MaxAttempts": 15,
+                "BackoffRate": 1
+              }
+            ],
+            "ResultPath": "$.stage5_result",
+            "Next": "Stage6-FrameExtraction"
+          },
+          "Stage6-FrameExtraction": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "FunctionName": "videosearcher-ffmpeg-3-new",
+              "Payload": {
+                "input_bucket.$": "$.temp_bucket",
+                "input_key.$": "States.Format('{}/stage5/clip_{}.tar.gz', $.execution_id, $.clip.clip_index)",
+                "output_bucket.$": "$.temp_bucket",
+                "output_key.$": "States.Format('{}/stage6/clip_{}.tar.gz', $.execution_id, $.clip.clip_index)"
+              }
+            },
+            "Retry": [
+              {
+                "ErrorEquals": [
+                  "Lambda.AWSLambdaException",
+                  "Lambda.SdkClientException",
+                  "Lambda.TooManyRequestsException",
+                  "Lambda.ServiceException"
+                ],
+                "IntervalSeconds": 30,
+                "MaxAttempts": 15,
+                "BackoffRate": 1
+              }
+            ],
+            "ResultPath": "$.stage6_result",
+            "Next": "Stage7-ObjectDetection"
+          },
+          "Stage7-ObjectDetection": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "FunctionName": "videosearcher-object-detector-new",
+              "Payload": {
+                "input_bucket.$": "$.temp_bucket",
+                "input_key.$": "States.Format('{}/stage6/clip_{}.tar.gz', $.execution_id, $.clip.clip_index)",
+                "output_bucket.$": "$.output_bucket",
+                "output_key.$": "States.Format('{}/results/clip_{}_detected.tar.gz', $.execution_id, $.clip.clip_index)"
+              }
+            },
+            "Retry": [
+              {
+                "ErrorEquals": [
+                  "Lambda.AWSLambdaException",
+                  "Lambda.SdkClientException",
+                  "Lambda.TooManyRequestsException",
+                  "Lambda.ServiceException"
+                ],
+                "IntervalSeconds": 30,
+                "MaxAttempts": 15,
+                "BackoffRate": 1
+              }
+            ],
+            "ResultPath": "$.stage7_result",
+            "End": true
+          }
+        }
+      },
+      "ResultPath": "$.parallel_results",
+      "Next": "PipelineComplete"
+    },
+    "PipelineComplete": {
+      "Type": "Pass",
+      "Result": {
+        "message": "VideoSearcher pipeline completed successfully"
+      },
+      "ResultPath": "$.final_status",
+      "End": true
+    }
+  }
+}
