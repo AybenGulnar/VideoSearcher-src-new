@@ -93,6 +93,25 @@ VideoSearcher-src/
 
 ---
 
+## Large Model Files (Not Included in Repository)
+
+The following model files exceed GitHub's 100 MB file size limit and are **not tracked in this repository**:
+
+| File | Size |
+|------|------|
+| `deepspeech/deepspeech-0.9.3-models.pbmm` | 180 MB |
+| `deepspeech/deepspeech-0.9.3-models.scorer` | 915 MB |
+| `object-detector/onnx/yolov4.onnx` | 256 MB |
+
+These files must be downloaded separately before building the Docker images:
+
+- **DeepSpeech models:** https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3
+- **YOLOv4 ONNX model:** https://github.com/onnx/models/tree/main/validated/vision/object_detection_segmentation/yolov4
+
+Place them in the corresponding directories under `aws-lambda-deployment-new/` before running `build-and-push.sh`.
+
+---
+
 ## Prerequisites
 
 - **AWS CLI** configured (`aws configure`) with permissions for: IAM, S3, ECR, Lambda, Step Functions, API Gateway
