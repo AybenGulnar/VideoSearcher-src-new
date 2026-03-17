@@ -143,6 +143,7 @@ VideoSearcher-src/
 │
 ├── DEPLOYMENT-SUMMARY.md      # Full deployment + load testing guide
 └── README.md
+```
 ---
 
 ## 4. Technical Challenges & Solutions
