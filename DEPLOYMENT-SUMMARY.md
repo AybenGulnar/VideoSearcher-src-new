@@ -172,7 +172,6 @@ aws-lambda-deployment-new/
 │   └── lambda_function.py       # Starts Step Functions via HTTP POST
 │
 ├── build-and-push.sh            # Build all images & push to ECR
-├── rebuild-fixed-stages.sh      # Rebuild only the 3 fixed stages
 ├── create-ecr-repos.sh          # Create ECR repositories
 ├── create-lambda-role.sh        # Create Lambda IAM role
 ├── create-lambda-functions.sh   # Create all Lambda functions
@@ -181,17 +180,11 @@ aws-lambda-deployment-new/
 ├── create-api-gateway.sh        # Create API Gateway + trigger Lambda
 ├── test-api-endpoint.sh         # Test the HTTP endpoint
 ├── api-endpoint.txt             # Stores endpoint URL (auto-generated)
-├── run-pipeline.sh              # Run pipeline with test video
-├── step-functions-definition.json  # State machine definition
-└── README.md
+└──  step-functions-definition.json  # State machine definition
 
 jmeter-tests/
 ├── videosearcher-http-test.jmx  # JMeter HTTP test plan (recommended)
-├── run-http-load-test.sh        # HTTP-based load testing script
 ├── videosearcher-load-test.jmx  # JMeter AWS CLI test plan (legacy)
-├── run-load-test.sh             # CLI load testing (legacy)
-├── JMETER-GUIDE.md              # Setup instructions
-├── README.md                    # Load testing documentation
 └── results/                     # Test results
 ```
 
@@ -288,13 +281,7 @@ aws stepfunctions list-state-machines --query "stateMachines[?contains(name, 'vi
 
 ## 6. Running the Pipeline
 
-### 6.1 Using the Helper Script
-
-```bash
-./run-pipeline.sh /path/to/your/video.mp4
-```
-
-### 6.2 Manual Execution (AWS CLI)
+### 6.1 Manual Execution (AWS CLI)
 
 ```bash
 # 1. Upload video to S3
@@ -306,7 +293,7 @@ aws stepfunctions start-execution \
     --input '{"input_bucket": "videosearcher-input-new-{ACCOUNT_ID}", "input_key": "video.mp4", "temp_bucket": "videosearcher-temp-new-{ACCOUNT_ID}", "output_bucket": "videosearcher-output-new-{ACCOUNT_ID}"}'
 ```
 
-### 6.3 HTTP Execution (Recommended for Load Testing)
+### 6.2 HTTP Execution (Recommended for Load Testing)
 
 After running `./create-api-gateway.sh`, you can trigger the pipeline via HTTP:
 
@@ -329,7 +316,7 @@ curl -X POST "https://{API_ID}.execute-api.us-east-1.amazonaws.com/prod/process?
 - Measures throughput and response times natively
 - Industry-standard load testing approach
 
-### 6.4 Monitor Progress
+### 6.3 Monitor Progress
 
 **AWS Console:**
 - Go to Step Functions → videosearcher-pipeline-new → Executions
