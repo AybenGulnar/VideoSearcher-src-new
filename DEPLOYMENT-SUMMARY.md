@@ -107,87 +107,42 @@ Input Video (.mp4)
 ## 3. Folder Structure
 
 ```
-aws-lambda-deployment-new/
+VideoSearcher-src/
 │
-├── ffmpeg-0/                    # Stage 1: Audio Extraction
-│   ├── Dockerfile
-│   ├── lambda_handler.py
-│   ├── pipeline_main.py         # Original instructor code
-│   ├── requirements.txt
-│   └── aisprint/                # Minimal AI-SPRINT stubs
+├── aws-lambda-deployment-new/
+│   ├── ffmpeg-0/              # Stage 1 — audio extraction
+│   ├── librosa/               # Stage 2 — silence detection
+│   ├── ffmpeg-1/              # Stage 3 — video segmentation
+│   ├── ffmpeg-2/              # Stage 4 — per-clip audio
+│   ├── deepspeech/            # Stage 5 — speech-to-text
+│   ├── ffmpeg-3/              # Stage 6 — frame extraction
+│   ├── object-detector/       # Stage 7 — YOLOv4 inference
+│   ├── api-trigger-lambda/    # HTTP entry point (API Gateway → Step Functions)
+│   ├── step-functions-definition.json
+│   ├── build-and-push.sh      # Build Docker images and push to ECR
+│   ├── create-ecr-repos.sh
+│   ├── create-lambda-role.sh
+│   ├── create-s3-buckets.sh
+│   ├── create-lambda-functions.sh
+│   ├── create-step-functions.sh
+│   └── create-api-gateway.sh
 │
-├── librosa/                     # Stage 2: Silence Detection
-│   ├── Dockerfile               # Includes libsndfile compilation
-│   ├── lambda_handler.py
-│   ├── pipeline_main.py
-│   ├── requirements.txt
-│   └── aisprint/
+├── jmeter-tests/
+│   ├── videosearcher-http-test.jmx           # 6-phase stepped load test
+│   ├── videosearcher-http-test-constant.jmx  # Constant-rate test
+│   ├── videosearcher-simple-5users.jmx       # Smoke test
+│   ├── ec2-jmeter-setup.sh                   # JMeter installer for EC2
+│   └── run-test-on-ec2.sh                    # Run test remotely on EC2
 │
-├── ffmpeg-1/                    # Stage 3: Video Segmentation
-│   ├── Dockerfile
-│   ├── lambda_handler.py
-│   ├── pipeline_main.py
-│   ├── requirements.txt
-│   └── aisprint/
+├── locust-tests/
+│   ├── locustfile.py          # Trace-driven load generator (Poisson process)
+│   ├── workloadProfile.csv    # Per-second RPS trace used by locustfile.py
+│   ├── plot_results.py        # Generate charts + HTML report from results
+│   ├── ec2-locust-setup.sh    # Locust installer for EC2
+│   └── run-locust-on-ec2.sh   # Run test remotely on EC2
 │
-├── ffmpeg-2/                    # Stage 4: Compression
-│   ├── Dockerfile
-│   ├── lambda_handler.py
-│   ├── pipeline_main.py
-│   ├── requirements.txt
-│   └── aisprint/
-│
-├── deepspeech/                  # Stage 5: Transcription (~1.9GB image)
-│   ├── Dockerfile
-│   ├── lambda_handler.py        
-│   ├── pipeline_main.py         
-│   ├── requirements.txt
-│   ├── models/                  # DeepSpeech model files (1.1GB)
-│   │   ├── deepspeech-0.9.3-models.pbmm
-│   │   └── deepspeech-0.9.3-models.scorer
-│   └── aisprint/
-│
-├── ffmpeg-3/                    # Stage 6: Frame Extraction
-│   ├── Dockerfile
-│   ├── lambda_handler.py        
-│   ├── pipeline_main.py
-│   ├── requirements.txt
-│   └── aisprint/
-│
-├── object-detector/             # Stage 7: Object Detection (~1.5GB image)
-│   ├── Dockerfile               
-│   ├── lambda_handler.py       
-│   ├── pipeline_main.py
-│   ├── postprocess.py
-│   ├── requirements.txt
-│   ├── onnx/
-│   │   ├── yolov4.onnx          # YOLO model (246MB)
-│   │   └── coco.names
-│   └── aisprint/
-│       ├── __init__.py
-│       ├── annotations/
-│       └── onnx_inference.py    # Custom ONNX inference wrapper
-│
-├── api-trigger-lambda/          # HTTP trigger Lambda for JMeter
-│   └── lambda_function.py       # Starts Step Functions via HTTP POST
-│
-├── build-and-push.sh            # Build all images & push to ECR
-├── create-ecr-repos.sh          # Create ECR repositories
-├── create-lambda-role.sh        # Create Lambda IAM role
-├── create-lambda-functions.sh   # Create all Lambda functions
-├── create-s3-buckets.sh         # Create S3 buckets
-├── create-step-functions.sh     # Create Step Functions state machine
-├── create-api-gateway.sh        # Create API Gateway + trigger Lambda
-├── test-api-endpoint.sh         # Test the HTTP endpoint
-├── api-endpoint.txt             # Stores endpoint URL (auto-generated)
-└──  step-functions-definition.json  # State machine definition
-
-jmeter-tests/
-├── videosearcher-http-test.jmx  # JMeter HTTP test plan (recommended)
-├── videosearcher-load-test.jmx  # JMeter AWS CLI test plan (legacy)
-└── results/                     # Test results
-```
-
+├── DEPLOYMENT-SUMMARY.md      # Full deployment + load testing guide
+└── README.md
 ---
 
 ## 4. Technical Challenges & Solutions
